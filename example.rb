@@ -59,10 +59,9 @@ puts
 # Step 1) Get your favorite HTML question
 my_html_question = p %{
 <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
-  <ExternalURL>https://www.zooniverse.org/projects/martenveldthuis/wildcam-gorgonzola/classify</ExternalURL>
+  <ExternalURL>https://ac8abe8e.ngrok.io/classify/start</ExternalURL>
   <FrameHeight>800</FrameHeight>
 </ExternalQuestion>
-
 }.gsub(/\s+/, " ").strip
 
 # Step 2) Get your favorite qualifications!
@@ -81,7 +80,7 @@ puts result = mturk.create_hit(
   assignment_duration_in_seconds: 600,
   max_assignments: 1,
   reward: '0.25',
-  title: 'Help us classify',
+  title: 'ZooTurk dev integration HIT',
   description: 'Count Penguins',
   question: my_html_question,
   qualification_requirements: my_qualifications

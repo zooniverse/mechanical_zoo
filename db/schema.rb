@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171006144130) do
+ActiveRecord::Schema.define(version: 20171013134043) do
 
-  create_table "classifications", force: :cascade do |t|
-    t.datetime "sent_to_turk_at"
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "assignments", id: :string, force: :cascade do |t|
+    t.string "hit_id", null: false
+    t.string "turk_submit_to", null: false
+    t.string "worker_id", null: false
+    t.integer "classification_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hits", force: :cascade do |t|
+    t.string "hit_type_id"
+    t.string "hit_group_id"
+    t.integer "workflow_id"
+    t.integer "subject_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

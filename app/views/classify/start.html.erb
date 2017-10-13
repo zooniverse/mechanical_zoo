@@ -1,9 +1,1 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Sent to turk at:</strong>
-  <%= @assignment.sent_to_turk_at %>
-</p>
-
-<%= link_to 'Edit', edit_classification_path(@classification) %> |
-<%= link_to 'Back', classifications_path %>
+<%= link_to "Classify!", @assignment.classify_url %>
