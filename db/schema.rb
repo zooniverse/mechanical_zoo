@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20171013134043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "hits", force: :cascade do |t|
+  create_table "hits", id: :string, force: :cascade do |t|
     t.string "hit_type_id"
     t.string "hit_group_id"
     t.integer "workflow_id"

@@ -1,4 +1,6 @@
 class HitGenerator
+  attr_reader :workflow
+
   def initialize(workflow)
     @workflow = workflow
   end
@@ -10,7 +12,7 @@ class HitGenerator
   end
 
   def generate_hit(subject_id)
-    mturk_hit = mturk.create_hit(
+    mturk_hit = mechanical_turk.create_hit(
       lifetime_in_seconds: 60 * 60 * 4,
       assignment_duration_in_seconds: 600,
       max_assignments: 1, # TODO
@@ -19,8 +21,10 @@ class HitGenerator
       description: 'Count Penguins',
       question: external_question(subject_id),
       qualification_requirements: qualifications
-    )
+    ).hit
 
+
+    puts mturk_hit.inspect
     Hit.create! id: mturk_hit.hit_id,
                 hit_type_id: mturk_hit.hit_type_id,
                 hit_group_id: mturk_hit.hit_group_id,
@@ -42,13 +46,25 @@ class HitGenerator
   end
 
   def external_question(subject_id)
-    xml = <<-QUESTION
-      <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
-        <ExternalURL>https://7ee96f58.eu.ngrok.io/classify/start?workflow_id=#{workflow.id}&subject_id=#{subject_id}</ExternalURL>
-        <FrameHeight>800</FrameHeight>
-      </ExternalQuestion>
-    QUESTION
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.ExternalQuestion(xmlns: "http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd") do
+        xml.ExternalURL(external_url(subject_id))
+        xml.FrameHeight(800)
+      end
+    end
 
-    question.gsub(/\s+/, " ").strip
+    xml = builder.to_xml# .gsub("<?xml version=\"1.0\"?>\n", "")
+    puts xml
+
+    xml
+  end
+
+  def external_url(subject_id)
+    "https://7ee96f58.eu.ngrok.io/classify/start?workflow_id=#{workflow.id}&subject_id=#{subject_id}"
+
+  end
+
+  def mechanical_turk
+    MechanicalTurk.instance
   end
 end
