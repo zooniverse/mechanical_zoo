@@ -17,14 +17,12 @@ class HitGenerator
       assignment_duration_in_seconds: 600,
       max_assignments: 1, # TODO
       reward: '0.25', # TODO
-      title: 'ZooTurk dev integration HIT',
-      description: 'Count Penguins',
+      title: 'Zooniverse Turk: I Fancy Cats',
+      description: 'Identify cats for science',
       question: external_question(subject_id),
       qualification_requirements: qualifications
     ).hit
 
-
-    puts mturk_hit.inspect
     Hit.create! id: mturk_hit.hit_id,
                 hit_type_id: mturk_hit.hit_type_id,
                 hit_group_id: mturk_hit.hit_group_id,
@@ -60,7 +58,7 @@ class HitGenerator
   end
 
   def external_url(subject_id)
-    "https://7ee96f58.eu.ngrok.io/classify/start?workflow_id=#{workflow.id}&subject_id=#{subject_id}"
+    "https://898a7294.eu.ngrok.io/turk/classify/start?workflow_id=#{workflow.id}&subject_id=#{subject_id}"
 
   end
 

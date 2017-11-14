@@ -1,7 +1,7 @@
 class ClassifyController < ApplicationController
   def start
     if params[:assignmentId] == "ASSIGNMENT_ID_NOT_AVAILABLE"
-      @assignment = Assignment.new
+      @assignment = Assignment.new(hit_id: params[:hitId])
     else
       @assignment = Assignment \
                       .create_with(hit_id: params[:hitId],
@@ -9,6 +9,8 @@ class ClassifyController < ApplicationController
                                    worker_id: params[:workerId])
                       .find_or_create_by(id: params[:assignmentId])
     end
+
+    redirect_to @assignment.classify_url
   end
 
   def callback

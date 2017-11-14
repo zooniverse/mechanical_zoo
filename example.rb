@@ -70,7 +70,7 @@ my_qualifications = [
   Aws::MTurk::Types::QualificationRequirement.new(
     qualification_type_id: '00000000000000000071',
     comparator: 'NotEqualTo',
-    locale_values: [ Aws::MTurk::Types::Locale.new( country: 'US', subdivision: 'CA' ) ]
+    locale_values: [Aws::MTurk::Types::Locale.new(country: 'US', subdivision: 'CA')]
   )
 ]
 
