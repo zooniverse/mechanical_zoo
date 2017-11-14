@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resource :session
   get 'classify/start'
   get 'classify/callback/:id', to: 'classify#callback'
 
