@@ -1,10 +1,4 @@
 class Credential < ApplicationRecord
-  Type = GraphQL::ObjectType.define do
-    name "Credential"
-    field :isLoggedIn, !types.Boolean, property: :logged_in?
-    field :isAdmin, !types.Boolean, property: :admin?
-  end
-
   before_create :set_expires_at
 
   def logged_in?
@@ -48,6 +42,10 @@ class Credential < ApplicationRecord
     nil
   end
 
+  def client
+    @client ||= Panoptes::Client.new(env: panoptes_client_env, auth: {token: token})
+  end
+
   private
 
   def jwt_payload
@@ -56,10 +54,6 @@ class Credential < ApplicationRecord
     else
       @jwt_payload ||= {}
     end
-  end
-
-  def client
-    @client ||= Panoptes::Client.new(env: panoptes_client_env, auth: {token: token})
   end
 
   def panoptes_client_env

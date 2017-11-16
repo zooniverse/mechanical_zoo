@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013134043) do
+ActiveRecord::Schema.define(version: 20171114165614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 20171013134043) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "credentials", force: :cascade do |t|
+    t.text "token", null: false
+    t.string "refresh"
+    t.datetime "expires_at", null: false
+    t.integer "project_ids", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_credentials_on_token", unique: true
+  end
+
   create_table "hits", id: :string, force: :cascade do |t|
     t.string "hit_type_id"
     t.string "hit_group_id"
@@ -33,4 +43,16 @@ ActiveRecord::Schema.define(version: 20171013134043) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "workflow_subjects", force: :cascade do |t|
+    t.bigint "workflow_id", null: false
+    t.integer "subject_id", null: false
+    t.datetime "finished_at"
+    t.index ["workflow_id"], name: "index_workflow_subjects_on_workflow_id"
+  end
+
+  create_table "workflows", force: :cascade do |t|
+    t.integer "project_id", null: false
+  end
+
+  add_foreign_key "workflow_subjects", "workflows"
 end
