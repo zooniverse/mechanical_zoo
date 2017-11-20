@@ -1,4 +1,8 @@
 class HitGenerator
+  include ActionView::Helpers
+  include ActionDispatch::Routing
+  include Rails.application.routes.url_helpers
+
   attr_reader :workflow
 
   def initialize(workflow)
@@ -62,8 +66,14 @@ class HitGenerator
   end
 
   def external_url(workflow_subject)
-    "https://898a7294.eu.ngrok.io/turk/classify/start?workflow_id=#{workflow_subject.workflow_id}&subject_id=#{workflow_subject.subject_id}"
+    # "#{Rails.application.secrets.site_domain}/turk/classify/start?workflow_id=#{workflow_subject.workflow_id}&subject_id=#{workflow_subject.subject_id}"
 
+    url_for(host: Rails.application.secrets.app_host,
+            protocol: :https,
+            controller: 'classify',
+            action: 'start',
+            workflow_id: workflow_subject.workflow_id,
+            subject_id: workflow_subject.subject_id)
   end
 
   def mechanical_turk

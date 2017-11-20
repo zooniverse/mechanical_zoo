@@ -16,4 +16,10 @@ class ClassifyController < ApplicationController
   def callback
     @assignment = Assignment.find(params[:id])
   end
+
+  private
+
+  def authenticated?
+    true
+  end
 end
