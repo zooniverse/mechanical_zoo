@@ -3,8 +3,8 @@ services:
   postgres:
     image: postgres:9.4
     environment:
-      - "POSTGRES_USER=turk"
-      - "POSTGRES_PASSWORD=turk"
+      - "POSTGRES_USER=mechzoo"
+      - "POSTGRES_PASSWORD=mechzoo"
 
   redis:
     image: redis
@@ -24,8 +24,8 @@ services:
     environment:
       - "RAILS_ENV=development"
       - "REDIS_URL=redis://redis:6379"
-      - "DATABASE_URL=postgresql://turk:turk@postgres/caesar_development"
-      - "DATABASE_URL_TEST=postgresql://turk:turk@postgres/caesar_test"
+      - "DATABASE_URL=postgresql://mechzoo:mechzoo@postgres/mechanical_zoo_development"
+      - "DATABASE_URL_TEST=postgresql://mechzoo:mechzoo@postgres/mechanical_zoo_test"
     links:
       - redis:redis
       - postgres:postgres

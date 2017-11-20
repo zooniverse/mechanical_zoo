@@ -10,7 +10,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 development:
   <<: *default
-  database: turk_development
+  database: mechanical_zoo_development
 test:
   <<: *default
-  database: turk_test
+  database: mechanical_zoo_test

@@ -7,4 +7,4 @@ test:
 production:
   adapter: redis
   url: redis://localhost:6379/1
-  channel_prefix: turk_production
+  channel_prefix: mechanical_zoo_production
