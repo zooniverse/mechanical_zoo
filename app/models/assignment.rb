@@ -1,6 +1,8 @@
 class Assignment < ApplicationRecord
   BASE_URI = "https://898a7294.eu.ngrok.io/projects/brooke/i-fancy-cats/turk_classify"
 
+  scope :complete, -> { where.not(classification_id: nil) }
+
   belongs_to :hit
 
   def classify_url

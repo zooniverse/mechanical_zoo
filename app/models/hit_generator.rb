@@ -5,29 +5,28 @@ class HitGenerator
     @workflow = workflow
   end
 
-  def generate_hits(subject_ids)
-    subject_ids.map do |subject_id|
-      generate_hit(subject_id)
+  def generate_hits(workflow_subjects)
+    workflow_subjects.map do |workflow_subject|
+      generate_hit(workflow_subject)
     end
   end
 
-  def generate_hit(subject_id)
+  def generate_hit(workflow_subject)
     mturk_hit = mechanical_turk.create_hit(
       lifetime_in_seconds: 60 * 60 * 4,
       assignment_duration_in_seconds: 600,
-      max_assignments: 1, # TODO
-      reward: '0.25', # TODO
+      max_assignments: assignments_left(workflow_subject),
+      reward: workflow.reward,
       title: 'Zooniverse Turk: I Fancy Cats',
       description: 'Identify cats for science',
-      question: external_question(subject_id),
+      question: external_question(workflow_subject),
       qualification_requirements: qualifications
     ).hit
 
     Hit.create! id: mturk_hit.hit_id,
                 hit_type_id: mturk_hit.hit_type_id,
                 hit_group_id: mturk_hit.hit_group_id,
-                workflow_id: workflow.id,
-                subject_id: subject_id
+                workflow_subject: workflow_subject
   end
 
   private
@@ -38,15 +37,20 @@ class HitGenerator
       Aws::MTurk::Types::QualificationRequirement.new(
         qualification_type_id: '00000000000000000071',
         comparator: 'NotEqualTo',
-        locale_values: [ Aws::MTurk::Types::Locale.new( country: 'US', subdivision: 'CA' ) ]
+        locale_values: [Aws::MTurk::Types::Locale.new(country: 'US', subdivision: 'CA')]
       )
     ]
   end
 
-  def external_question(subject_id)
+  def assignments_left(workflow_subject)
+    completed_assignments = workflow_subject.assignments.complete.count
+    workflow.desired_assignments - completed_assignments
+  end
+
+  def external_question(workflow_subject)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.ExternalQuestion(xmlns: "http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd") do
-        xml.ExternalURL(external_url(subject_id))
+        xml.ExternalURL(external_url(workflow_subject))
         xml.FrameHeight(800)
       end
     end
@@ -57,8 +61,8 @@ class HitGenerator
     xml
   end
 
-  def external_url(subject_id)
-    "https://898a7294.eu.ngrok.io/turk/classify/start?workflow_id=#{workflow.id}&subject_id=#{subject_id}"
+  def external_url(workflow_subject)
+    "https://898a7294.eu.ngrok.io/turk/classify/start?workflow_id=#{workflow_subject.workflow_id}&subject_id=#{workflow_subject.subject_id}"
 
   end
 
