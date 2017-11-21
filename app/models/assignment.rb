@@ -1,22 +1,32 @@
 class Assignment < ApplicationRecord
-  BASE_URI = "https://898a7294.eu.ngrok.io/projects/brooke/i-fancy-cats/turk_classify"
+  BASE_URI = "https://turk.pfe-preview.zooniverse.org/projects"
 
   scope :complete, -> { where.not(classification_id: nil) }
 
   belongs_to :hit
 
-  def classify_url
-    callback_uri = URI.parse("https://898a7294.eu.ngrok.io/turk/classify/callback/#{id}")
-
+  def classify_url(callback_uri)
     query = {
-      workflow_id: hit.workflow_id,
-      subject_id: hit.subject_id,
+      workflow_id: workflow_id,
+      subject_id: subject_id,
       callback: callback_uri.to_s,
       preview: !persisted?
     }
 
-    uri = URI.parse(BASE_URI)
+    uri = URI.parse(BASE_URI + "/" + workflow.project_slug + "/turk_classify")
     uri.query = query.to_query
     uri.to_s
+  end
+
+  def workflow
+    hit.workflow_subject.workflow
+  end
+
+  def workflow_id
+    hit.workflow_subject.workflow_id
+  end
+
+  def subject_id
+    hit.workflow_subject.subject_id
   end
 end
