@@ -35,7 +35,7 @@ gem 'bootstrap', '~> 4.0.0.beta2'
 # gem 'capistrano-rails', group: :development
 gem 'dotenv-rails'
 gem 'aws-sdk'
-gem 'panoptes-client', path: '../panoptes-client.rb'
+gem 'panoptes-client', '~> 0.3.3'
 gem 'omniauth'
 gem 'omniauth-zooniverse'
 gem 'rollbar'
