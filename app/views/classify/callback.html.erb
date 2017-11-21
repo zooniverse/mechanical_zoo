@@ -1,7 +1,14 @@
 <h1>Register performed work on Mechanical Turk</h1>
 
-<%= form_tag(@assignment.turk_submit_to + "/mturk/externalSubmit") do |f| %>
+<%= form_tag(@assignment.turk_submit_to + "/mturk/externalSubmit", id: "workerform") do |f| %>
   <%= hidden_field_tag :assignmentId, @assignment.id %>
   <%= hidden_field_tag :classification_id, @assignment.classification_id %>
   <%= submit_tag %>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    form = document.getElementById("workerform");
+    form.submit();
+  });
+</script>
