@@ -15,6 +15,9 @@ class ClassifyController < ApplicationController
 
   def callback
     @assignment = Assignment.find(params[:id])
+
+    # TODO: Verify that classification is OK for this assignment
+    @assignment.update! classification_id: params[:classification_id]
   end
 
   private
