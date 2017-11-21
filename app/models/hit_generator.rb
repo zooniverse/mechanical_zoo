@@ -20,7 +20,7 @@ class HitGenerator
       lifetime_in_seconds: 60 * 60 * 4,
       assignment_duration_in_seconds: 600,
       max_assignments: assignments_left(workflow_subject),
-      reward: workflow.reward,
+      reward: workflow.reward.to_s,
       title: 'Zooniverse Turk: I Fancy Cats',
       description: 'Identify cats for science',
       question: external_question(workflow_subject),
