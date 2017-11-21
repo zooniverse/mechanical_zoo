@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120144904) do
+ActiveRecord::Schema.define(version: 20171121141653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,8 +37,6 @@ ActiveRecord::Schema.define(version: 20171120144904) do
   create_table "hits", id: :string, force: :cascade do |t|
     t.string "hit_type_id"
     t.string "hit_group_id"
-    t.integer "workflow_id"
-    t.integer "subject_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "workflow_subject_id", null: false
@@ -55,6 +53,7 @@ ActiveRecord::Schema.define(version: 20171120144904) do
     t.integer "project_id", null: false
     t.integer "desired_assignments", default: 1, null: false
     t.float "reward", default: 0.0, null: false
+    t.string "project_slug", null: false
   end
 
   add_foreign_key "hits", "workflow_subjects"
