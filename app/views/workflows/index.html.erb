@@ -1,0 +1,18 @@
+
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @workflows.each do |workflow| %>
+    <tr>
+      <td><%= workflow.id %></td>
+      <td><%= workflow.desired_assignments %></td>
+      <td><%= workflow.reward %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,17 @@
+
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+    <tr>
+      <td><%= project.id %></td>
+      <td><%= link_to project.display_name, project_workflows_path(project) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
