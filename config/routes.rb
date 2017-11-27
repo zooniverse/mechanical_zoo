@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resource :session
+  get '/auth/:provider/callback', to: 'sessions#create'
 
   resources :classify do
     collection do
