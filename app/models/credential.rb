@@ -27,7 +27,17 @@ class Credential < ApplicationRecord
   end
 
   def fetch_accessible_projects
-    client.panoptes.paginate("/projects", current_user_roles: ['owner', 'collaborator'])
+    client.panoptes.paginate("/projects", current_user_roles: ['owner', 'collaborator'])["projects"].map do |attributes|
+      Project.new(id: attributes["id"],
+                  display_name: attributes["display_name"])
+    end
+  end
+
+  def fetch_accessible_workflows(project_id)
+    client.panoptes.paginate("/workflows", project_id: project_id)["workflows"].map do |attributes|
+      Workflow.new(id: attributes["id"])
+    end
+
   end
 
   def accessible_workflow?(id)

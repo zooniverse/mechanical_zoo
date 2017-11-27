@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
                           credential.expires_at = Time.at(session[:credentials]["expires_at"])
                         end
 
-                        credential.project_ids = credential.fetch_accessible_projects["projects"].map{ |prj| prj["id"] }
+                        credential.project_ids = credential.fetch_accessible_projects.map{ |prj| prj["id"] }
                       end
                     else
                       Credential.new expires_at: 2.minutes.from_now
