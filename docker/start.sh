@@ -1,11 +1,6 @@
 #!/bin/bash -ex
 
-cd /rails_app
-
-if [ -d "/rails_conf/" ]
-then
-    ln -sf /rails_conf/* ./config/
-fi
+cd /app
 
 mkdir -p tmp/pids/
 rm -f tmp/pids/*.pid
@@ -25,6 +20,11 @@ else
   if [ -f "commit_id.txt" ]
   then
     cp commit_id.txt public/
+  fi
+
+  if [ -f /run/secrets/environment ]
+  then
+      source /run/secrets/environment
   fi
 
   exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
