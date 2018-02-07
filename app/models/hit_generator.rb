@@ -3,6 +3,9 @@ class HitGenerator
   include ActionDispatch::Routing
   include Rails.application.routes.url_helpers
 
+  MAX_TIME_TO_CLASSIFY = 10.minutes.to_i
+  HIT_POSTED_FOR = 1.day.to_i
+
   attr_reader :workflow
 
   def initialize(workflow)
@@ -17,8 +20,8 @@ class HitGenerator
 
   def generate_hit(workflow_subject)
     mturk_hit = mechanical_turk.create_hit(
-      lifetime_in_seconds: 60 * 60 * 4,
-      assignment_duration_in_seconds: 600,
+      lifetime_in_seconds: HIT_POSTED_FOR,
+      assignment_duration_in_seconds: MAX_TIME_TO_CLASSIFY,
       max_assignments: assignments_left(workflow_subject),
       reward: workflow.reward.to_s,
       title: workflow.hit_title,
@@ -37,12 +40,12 @@ class HitGenerator
 
   def qualifications
     [
-      # Let's exclude workers who live in California
-      Aws::MTurk::Types::QualificationRequirement.new(
-        qualification_type_id: '00000000000000000071',
-        comparator: 'NotEqualTo',
-        locale_values: [Aws::MTurk::Types::Locale.new(country: 'US', subdivision: 'CA')]
-      )
+      # # Let's exclude workers who live in California
+      # Aws::MTurk::Types::QualificationRequirement.new(
+      #   qualification_type_id: '00000000000000000071',
+      #   comparator: 'NotEqualTo',
+      #   locale_values: [Aws::MTurk::Types::Locale.new(country: 'US', subdivision: 'CA')]
+      # )
     ]
   end
 
