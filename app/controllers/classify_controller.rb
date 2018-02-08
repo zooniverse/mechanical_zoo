@@ -23,6 +23,7 @@ class ClassifyController < ApplicationController
 
     # TODO: Verify that classification is OK for this assignment
     @assignment.update! classification_id: params[:classification_id]
+    ProcessAssignment.new(@assignment).call
   end
 
   private

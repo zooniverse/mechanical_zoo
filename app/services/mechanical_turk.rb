@@ -8,7 +8,7 @@ class MechanicalTurk
     development: 'https://mturk-requester-sandbox.us-east-1.amazonaws.com/'.freeze,
   }
 
-  delegate :create_hit, to: :client
+  delegate :create_hit, :approve_assignment, to: :client
 
   private
 
