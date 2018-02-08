@@ -21,8 +21,8 @@ class HitGenerator
       assignment_duration_in_seconds: 600,
       max_assignments: assignments_left(workflow_subject),
       reward: workflow.reward.to_s,
-      title: 'Zooniverse Turk: I Fancy Cats',
-      description: 'Identify cats for science',
+      title: workflow.hit_title,
+      description: workflow.hit_description,
       question: external_question(workflow_subject),
       qualification_requirements: qualifications
     ).hit
