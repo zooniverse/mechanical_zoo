@@ -3,9 +3,6 @@ class HitGenerator
   include ActionDispatch::Routing
   include Rails.application.routes.url_helpers
 
-  MAX_TIME_TO_CLASSIFY = 10.minutes.to_i
-  HIT_POSTED_FOR = 1.day.to_i
-
   attr_reader :workflow
 
   def initialize(workflow)
@@ -20,8 +17,8 @@ class HitGenerator
 
   def generate_hit(workflow_subject)
     mturk_hit = mechanical_turk.create_hit(
-      lifetime_in_seconds: HIT_POSTED_FOR,
-      assignment_duration_in_seconds: MAX_TIME_TO_CLASSIFY,
+      lifetime_in_seconds: workflow.hit_posted_for,
+      assignment_duration_in_seconds: workflow.hit_assignment_timeout,
       max_assignments: assignments_left(workflow_subject),
       reward: workflow.reward.to_s,
       title: workflow.hit_title,
