@@ -10,7 +10,8 @@ class Assignment < ApplicationRecord
       workflow_id: workflow_id,
       subject_id: subject_id,
       callback: callback_uri.to_s,
-      preview: !persisted?
+      preview: !persisted?,
+      env: Rails.env.production? ? "production" : "staging"
     }
 
     uri = URI.parse(BASE_URI + "/" + workflow.project_slug + "/turk_classify")
