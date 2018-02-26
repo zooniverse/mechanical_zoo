@@ -6,8 +6,10 @@ class ProcessAssignment
   end
 
   def call
-    # TODO: Check that the classification exists and is sensible
-    accept
+    if assignment.unprocessed?
+      # TODO: Check that the classification exists and is sensible
+      accept
+    end
   end
 
   def accept

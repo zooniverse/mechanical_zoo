@@ -30,4 +30,8 @@ class Assignment < ApplicationRecord
   def subject_id
     hit.workflow_subject.subject_id
   end
+
+  def unprocessed?
+    approved_at.present? || rejected_at.present?
+  end
 end

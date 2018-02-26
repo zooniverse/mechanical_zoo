@@ -23,7 +23,12 @@ class ClassifyController < ApplicationController
 
     # TODO: Verify that classification is OK for this assignment
     @assignment.update! classification_id: params[:classification_id]
-    # ProcessAssignment.new(@assignment).call
+
+    # The MTurk API won't let you accept until they've received the data.
+    # Annoyingly, it also won't let you *query* to see what the status is,
+    # *until they receive the submission*. So the best guess is just to
+    # for a minute?
+    ProcessAssignmentWorker.perform_in(1.minute, @assignment.id)
   end
 
   private
