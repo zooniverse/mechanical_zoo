@@ -32,6 +32,6 @@ class Assignment < ApplicationRecord
   end
 
   def unprocessed?
-    approved_at.present? || rejected_at.present?
+    approved_at.blank? && rejected_at.blank?
   end
 end
